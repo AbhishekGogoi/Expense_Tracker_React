@@ -138,6 +138,13 @@ const Dashboard = () => {
   };
 
   const exportToCsv = () => {
+    if (transactions.length === 0) {
+      toast.warn("Nothing to export", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      return;
+    }
     const csv = unparse(transactions, {
       fields: ["description", "type", "date", "amount", "tag"],
     });

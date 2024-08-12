@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Table, Select, Radio, Menu, Dropdown } from "antd";
 import search from "../assets/search.svg";
 import { EllipsisOutlined } from "@ant-design/icons";
-import { parse } from "papaparse";
+// import { parse } from "papaparse";
 import { toast } from "react-toastify";
 import DeleteConfirmation from "./Modals/DeleteConfirmation";
 import EditTransaction from "./Modals/EditTransaction";
@@ -38,30 +38,6 @@ const TransactionSearch = ({
   useEffect(() => {
     setLocalTransactions(transactions);
   }, [transactions]);
-
-  const importFromCsv = (event) => {
-    event.preventDefault();
-    try {
-      parse(event.target.files[0], {
-        header: true,
-        complete: async function (results) {
-          for (const transaction of results.data) {
-            console.log("Transactions", transaction);
-            const newTransaction = {
-              ...transaction,
-              amount: parseInt(transaction.amount),
-            };
-            await addTransaction(newTransaction, true);
-          }
-        },
-      });
-      toast.success("All Transactions Added");
-      fetchTransactions();
-      event.target.files = null;
-    } catch (e) {
-      toast.error(e.message);
-    }
-  };
 
   const handleMenuClick = (record, { key }) => {
     if (key === "edit") {
@@ -242,17 +218,6 @@ const TransactionSearch = ({
             <button className="btn" onClick={exportToCsv}>
               Export to CSV
             </button>
-            <label for="file-csv" className="btn btn-blue">
-              Import from CSV
-            </label>
-            <input
-              onChange={importFromCsv}
-              id="file-csv"
-              type="file"
-              accept=".csv"
-              required
-              style={{ display: "none" }}
-            />
           </div>
         </div>
 
