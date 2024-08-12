@@ -33,6 +33,7 @@ const Dashboard = () => {
 
   const [isExpenseModalVisible, setIsExpenseModalVisible] = useState(false);
   const [isIncomeModalVisible, setIsIncomeModalVisible] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const cardStyle = {
     boxShadow: "0px 0px 30px 8px rgba(227, 227, 227, 0.75)",
@@ -44,7 +45,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     saveTransactionsToStorage(transactions);
-  }, [transactions]);
+    if (!isInitialized) setIsInitialized(true);
+  }, [transactions, isInitialized]);
 
   const processChartData = () => {
     const balanceData = [];
@@ -113,8 +115,6 @@ const Dashboard = () => {
       description: values.description,
     };
 
-    console.log("New Transaction:", newTransaction);
-
     dispatch({ type: "ADD_TRANSACTION", payload: newTransaction });
     setIsExpenseModalVisible(false);
     setIsIncomeModalVisible(false);
@@ -161,7 +161,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <Header />
-      {loading ? (
+      {loading || !isInitialized ? (
         <Loader />
       ) : (
         <>

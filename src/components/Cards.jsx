@@ -9,6 +9,8 @@ const Cards = ({
   showIncomeModal,
   cardStyle,
 }) => {
+  const balanceColor = currentBalance < 0 ? "red" : "black";
+
   return (
     <Row
       style={{
@@ -20,7 +22,7 @@ const Cards = ({
     >
       <Card bordered={true} style={cardStyle}>
         <h2>Current Balance</h2>
-        <p>₹{currentBalance}</p>
+        <p style={{ color: balanceColor }}>₹{currentBalance}</p>
       </Card>
 
       <Card bordered={true} style={cardStyle}>
